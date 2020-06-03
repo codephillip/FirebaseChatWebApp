@@ -38,26 +38,9 @@
 	console.log("start firestore");
 
 	var db = firebase.firestore();
-	// db.collection("users").add({
-	//     first: "Ada",
-	//     last: "Lovelace",
-	//     born: 1815
-	// })
-	// .then(function(docRef) {
-	//     console.log("Document written with ID: ", docRef.id);
-	// })
-	// .catch(function(error) {
-	//     console.error("Error adding document: ", error);
-	// });
 
-	// db.collection("users").get().then((querySnapshot) => {
-	//     querySnapshot.forEach((doc) => {
-	//         console.log(`${doc.id} => ${doc.data()}`);
-	//     });
-	// });
-
-
-	db.collection("user").onSnapshot(
+	var chatObject;
+	db.collection("user").orderBy("createdAt", "desc").onSnapshot(
 		(querySnapshot) => {
 	    querySnapshot.forEach((doc) => {
 	        console.log(`${doc.id} => ${doc.data()}`);
@@ -77,27 +60,35 @@
 	        	var chat_messages = document.getElementById("chat_messages");
 				console.log("##################");
 				console.log(chat_messages);
-				while (chat_messages.firstChild) chat_messages.removeChild(chat_messages.firstChild);
-				
-	        	db.collection("user").doc(doc.id).collection("chat").onSnapshot(
+
+				chatObject = db.collection("user").doc(doc.id).collection("chat");
+				chatObject2 = chatObject.orderBy("createdAt", "asc");
+	        	chatObject2.onSnapshot(
 					(querySnapshot) => {
+						while (chat_messages.firstChild) chat_messages.removeChild(chat_messages.firstChild);
+
 					    querySnapshot.forEach((doc) => {
 					        console.log(`${doc.id} => ${doc.data()}`);
 					        console.log('received 123 ' + doc.data().message);
 
-					        var node = document.createElement("LI");                 // Create a <li> node
-					        node.classList.add("sent");
+					        var node = document.createElement("LI");
+
+					        if (doc.data().name.includes("admin")) {
+						        node.classList.add("replies");
+					        } else {
+					        	node.classList.add("sent");
+					        }
 							var para = document.createElement("p");
 
 							var textnode = document.createTextNode(doc.data().message);         // Create a text node
 							para.appendChild(textnode);
-							node.appendChild(para); 
 
 							console.log(textnode);
 							console.log(node)
 							var image = document.createElement("IMG");
 							image.src = "http://emilcarlsson.se/assets/mikeross.png";
 							node.appendChild(image); 
+							node.appendChild(para); 
 							
 							chat_messages.appendChild(node);
 					    });
@@ -143,94 +134,33 @@
 	    });
 	});
 
-	// document.getElementById("users").addEventListener("click", function(e) {
-	// 	console.log(e.target);
-	// 	alert("clicked2");
-	// 	console.log(e.target.parentElement)
-	// 	// if (e.target && e.target.matches("li.contact")) {
-	// 	// 	// e.target.className = "foo"; // new class name here
-	// 	// 	alert("clicked ");
-	// 	// }
-	// });
+	function newMessage() {
+		// alert("test");
 
-	// function testfun (message) {
-	// 	alert(message);
-	// }
+		message = $(".message-input input").val();
+		if($.trim(message) == '') {
+			return false;
+		}
+		
+		$('.message-input input').val(null);
+		$(".messages").scrollTop(1500);
+		// var $target = $('html,body'); 
+		// $target.animate({scrollTop: $target.height()}, 1000);
+		$(".messages").animate({ scrollTop: $(document).height() + 99999}, 100);
 
-	// var anchors = document.getElementsByTagName('contact');
- //        for(var i = 0; i < anchors.length; i++) {
- //        	console.log()
- //            var anchor = anchors[i];
- //            anchor.onclick = function() {
- //                alert('ho ho ho');
- //            }
- //        }
-
- //    function setMyHandler(){
-	//    var elements = document.getElementsByClassName('contact');
-	//    for(var i = 0; i < elements.length; i++){
-	//       console.log(elements[i]);
-
-	//       elements[i].onclick = function(){
-	//       	console.log("####");
-	//       	alert('ho ho ho');
-	//       };
-	//    }
-	// }
-
-	// window.onload = setMyHandler();
-
-	// $('.users li div').on('click', function(e) {
-	//   alert("clicked ");alert("clicked ");
-	// });
-	//.innerhtml
-
-	// document.getElementByClass("contact").addEventListener("click", alert("clicked "));
-
-	// db.collection("users").onSnapshot(
-	// 	(querySnapshot) => {
-	//     querySnapshot.forEach((doc) => {
-	//         console.log(`${doc.id} => ${doc.data()}`);
-	//         console.log('received 123 ' + doc.data().first);
-	//         var x = document.getElementsByClassName("example");
-	//         var node = document.createElement("LI");                 // Create a <li> node
-	//         node.classList.add("sent");
-	// 		var para = document.createElement("p");
-
-	// 		var textnode = document.createTextNode(doc.data().first + doc.data().last + doc.data().born);         // Create a text node
-	// 		para.appendChild(textnode);
-	// 		node.appendChild(para); 
-
-	// 		console.log(textnode);
-	// 		console.log(node)
-	// 		var image = document.createElement("IMG");
-	// 		image.src = "http://emilcarlsson.se/assets/mikeross.png";
-	// 		node.appendChild(image); 
-	// 		var mylist = document.getElementById("chat_messages");
-	// 		console.log("##################");
-	// 		console.log(mylist);
-	// 		mylist.appendChild(node);
-	//     });
-	// });
-
-
-	console.log("saved sample data");
-
-	  // Initialize Firebase
-	  
-	//   firebase.analytics();
-
-	//   // var db = firebase.firestore()
-
-	// firebase.firestore().collection("sample").add({
-	//     first: "Ada",
-	//     last: "Lovelace",
-	//     born: 1815
-	// })
-	// .then(function(docRef) {
-	//     console.log("Document written with ID: ", docRef.id);
-	// })
-	// .catch(function(error) {
-	//     console.error("Error adding document: ", error);
-	// });
+		console.log("chat object");
+		console.log(chatObject);
+		chatObject.add({
+			//todo add admin name
+		    name: "admin4444",
+		    message: message,
+		    createdAt: new Date()
+		})
+		.then(function(docRef) {
+		    console.log("Document written with ID: ", docRef.id);
+		})
+		.catch(function(error) {
+		    console.error("Error adding document: ", error);
+		});
+	}
 }{}
