@@ -60,8 +60,8 @@
 								node.appendChild(image); 
 								node.appendChild(para); 
 								chat_messages.appendChild(node);
-								scrollToBottom();
 						    });
+								// scrollToBottom();
 						}
 					);
 
@@ -136,7 +136,7 @@
 	}
 
 	function scrollToBottom() {
-		$(".messages").animate({ scrollTop: $(document).height() + 99999}, 100);
+		$(".messages").animate({ scrollTop: $(document).height() + 99999}, "fast");
 	}
 
 	function clearElement(element) {
