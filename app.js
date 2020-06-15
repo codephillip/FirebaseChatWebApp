@@ -1,13 +1,14 @@
 {
+// 	get this from the firebase console
 	var firebaseConfig = {
-		apiKey: "AIzaSyB5iDUqe5BP2PwQup8ZcV-GXBpmdypCo-Q",
-		authDomain: "safepal-85032.firebaseapp.com",
-		databaseURL: "https://safepal-85032.firebaseio.com",
-		projectId: "safepal-85032",
-		storageBucket: "safepal-85032.appspot.com",
+		apiKey: "XXXXXXXXXXXXXXXXX",
+		authDomain: "XXXXXXXXXXXXXXXXX.firebaseapp.com",
+		databaseURL: "https://XXXXXXXXXXXXXXXXX.firebaseio.com",
+		projectId: "XXXXXXXXXXXXXXXXX",
+		storageBucket: "XXXXXXXXXXXXXXXXX.appspot.com",
 		messagingSenderId: "991858471604",
-		appId: "1:991858471604:web:992a2906ba8b200b711de1",
-		measurementId: "G-Y3BFE0LYGZ"
+		appId: "1:XXXXXXXXXXXXXXXXX:web:XXXXXXXXXXXXXXXXX",
+		measurementId: "G-XXXXXXXXXXXXXXXXX"
 	};
 
 	firebase.initializeApp(firebaseConfig);
@@ -45,11 +46,11 @@
 						        if (doc.data().name.includes("admin")) {
 							        node.classList.add("replies");
 							        var image = document.createElement("IMG");
-									image.src = "https://safepal-production.s3-us-west-2.amazonaws.com/icons/woman_color.png";
+									image.src = "http://emilcarlsson.se/assets/harveyspecter.png";
 						        } else {
 						        	node.classList.add("sent");
 						        	var image = document.createElement("IMG");
-									image.src = "https://safepal-production.s3-us-west-2.amazonaws.com/icons/girl_color.png";
+									image.src = "hhttp://emilcarlsson.se/assets/harveyspecter.png";
 						        }
 								var para = document.createElement("p");
 
@@ -69,11 +70,11 @@
 					clearElement(contactProfile);
 
 					var para2 = document.createElement("p");
-					var textnode = document.createTextNode(doc.data().username);         // Create a text node
+					var textnode = document.createTextNode(doc.data().username);
 					para2.appendChild(textnode);
 
 					var image2 = document.createElement("IMG");
-					image2.src = "https://safepal-production.s3-us-west-2.amazonaws.com/icons/girl_color.png";
+					image2.src = "http://emilcarlsson.se/assets/harveyspecter.png";
 					contactProfile.appendChild(image2); 
 					contactProfile.appendChild(para2); 
 		        };
@@ -87,7 +88,7 @@
 		        wrapDiv.appendChild(onlineSpan);
 
 		        var image = document.createElement("IMG");
-				image.src = "https://safepal-production.s3-us-west-2.amazonaws.com/icons/girl_color.png";
+				image.src = "http://emilcarlsson.se/assets/harveyspecter.png";
 				wrapDiv.appendChild(image);
 
 				var metaDiv = document.createElement("div");  
